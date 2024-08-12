@@ -6,7 +6,12 @@ COPY . /app
 # COPY requirements.txt requirements.tx
 
 RUN pip install --no-cache-dir -r requirements.txt
-	
+
+# Install pytest
+RUN pip install pytest
+
+# Copy the rest of the application code
+COPY . .	
 
 # Expose port 5000 for Flask
 EXPOSE 5000
