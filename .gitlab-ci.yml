@@ -16,7 +16,7 @@ build:
   stage: build
   script:
     - echo "Building the Docker image for the Flask app"
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME ./app  # Update the path to ./app
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME ./app  # The Dockerfile path is updated to ./app
   artifacts:
     paths:
       - app/
@@ -28,7 +28,7 @@ test:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - echo "Running tests on the Flask app"
-    - docker run --rm $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME pytest
+    - docker run --rm $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME pytest  # The path for pytest is correct if pytest is installed in the container
 
 # Deploy Stage
 deploy:
