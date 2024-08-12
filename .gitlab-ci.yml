@@ -1,0 +1,41 @@
+# .gitlab-ci.yml
+
+# Define the stages of the pipeline
+stages:
+  - build  # Stage where the Docker image is built
+  - deploy  # Stage where the application is deployed to the server
+
+# Build stage
+build:
+  stage: build  # Specify that this job belongs to the 'build' stage
+  script:
+    - echo "Building the Docker image for the Flask app"
+    # Build the Docker image from the Dockerfile in the 'app' directory
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME ./app
+    - echo "Pushing the Docker image to GitLab Container Registry"
+    # Push the Docker image to the GitLab Container Registry
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  only:
+    - main  # This job runs only on changes to the 'main' branch
+
+# Deploy stage
+deploy:
+  stage: deploy  # Specify that this job belongs to the 'deploy' stage
+  script:
+    - echo "Starting the deployment process"
+    - echo "Pulling the latest Docker image from the GitLab Container Registry"
+    # Pull the latest image that was pushed during the build stage
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - echo "Stopping the currently running container"
+    # Stop the currently running container (replace 'berkeley-project-app-1' with your container name)
+    - docker stop berkeley-project-app-1 || true  # The '|| true' ensures the script continues even if the container is not running
+    - echo "Removing the stopped container"
+    # Remove the stopped container (replace 'berkeley-project-app-1' with your container name)
+    - docker rm berkeley-project-app-1 || true
+    - echo "Starting a new container with the latest image"
+    # Start a new container using the latest image
+    - docker run -d --name berkeley-project-app-1 -p 5000:5000 $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  only:
+    - main  # This job runs only on changes to the 'main' branch
+
+# Additional settings can be added here, such as environment variables, notifications, etc.
