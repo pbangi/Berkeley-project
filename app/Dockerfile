@@ -1,23 +1,23 @@
 FROM python:3.9-slim
+
+# Set the working directory
 WORKDIR /app
 
+# Copy the application code to the working directory
 COPY . /app
 
-# COPY requirements.txt requirements.tx
-
+# Install the dependencies from the requirements file
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install pytest
+# Install pytest for testing
 RUN pip install pytest
 
-# Copy the rest of the application code
-COPY . .	
-
-# Expose port 5000 for Flask
+# Expose the application port
 EXPOSE 5000
 
-# Define environment variable
+# Define an environment variable (optional)
 ENV NAME World
 
-# Run app.py when the container launches
+# Run the Flask application
 CMD ["python", "app.py"]
+
