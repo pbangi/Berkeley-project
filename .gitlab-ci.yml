@@ -28,7 +28,9 @@ test:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - echo "Running tests on the Flask app"
-    - docker run --rm $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME pytest  # The path for pytest is correct if pytest is installed in the container
+    - docker run --rm $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME /bin/sh -c "pip install pytest && pytest"  # Installing pytest during test stage
+  dependencies:
+    - build
 
 # Deploy Stage
 deploy:
@@ -40,3 +42,5 @@ deploy:
     - echo "Deployed successfully!"
   only:
     - main
+  dependencies:
+    - build
