@@ -24,6 +24,8 @@ build:
 # Test Stage
 test:
   stage: test
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - echo "Running tests on the Flask app"
     - docker run --rm $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME pytest
