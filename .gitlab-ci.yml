@@ -16,7 +16,7 @@ build:
   stage: build
   script:
     - echo "Building the Docker image for the Flask app"
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME ./app  # Update the path to ./app
   artifacts:
     paths:
       - app/
