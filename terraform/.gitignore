@@ -1,0 +1,16 @@
+# Local Terraform directories
+.terraform/
+
+# State files
+terraform.tfstate
+terraform.tfstate.backup
+
+# Crash log files
+crash.log
+
+# Plan output files
+plan.out
+
+# Backup files
+*.bkp
+
