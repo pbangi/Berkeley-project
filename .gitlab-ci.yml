@@ -6,6 +6,9 @@ services:
 variables:
   DOCKER_TLS_CERTDIR: "/certs"
 
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
 stages:
   - build
   - test
@@ -17,6 +20,7 @@ build:
   script:
     - echo "Building the Docker image for the Flask app"
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME ./app
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
   artifacts:
     paths:
       - app/
